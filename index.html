@@ -1,74 +1,754 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CubesDigital - Electricals & Kitchen Appliances</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
-    <header class="bg-blue-700 text-white py-4 shadow-md">
-        <div class="container mx-auto text-center">
-            <h1 class="text-3xl font-bold">CubesDigital</h1>
-            <p class="text-lg">Your One-Stop Store for Electricals, Kitchen Appliances & More</p>
-        </div>
-    </header>
-    <main class="container mx-auto py-10">
-        <h2 class="text-2xl font-bold text-center mb-6">Our Featured Products</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white shadow-lg rounded-lg p-5">
-                <h2 class="text-xl font-semibold mt-3">Electric Kettle</h2>
-                <p class="text-gray-600">Fast boiling stainless steel kettle with auto shut-off.</p>
-                <p class="text-blue-700 font-bold mt-2">$49.99</p>
-            </div>
-            <div class="bg-white shadow-lg rounded-lg p-5">
-                <h2 class="text-xl font-semibold mt-3">Microwave Oven</h2>
-                <p class="text-gray-600">Multi-function smart microwave with quick heating.</p>
-                <p class="text-blue-700 font-bold mt-2">$199.99</p>
-            </div>
-            <div class="bg-white shadow-lg rounded-lg p-5">
-                <h2 class="text-xl font-semibold mt-3">Induction Cooktop</h2>
-                <p class="text-gray-600">Fast and energy-efficient cooking with precise control.</p>
-                <p class="text-blue-700 font-bold mt-2">$129.99</p>
-            </div>
-        </div>
-        <h2 class="text-2xl font-bold text-center mt-10">Latest Gadgets & Appliances</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-            <div class="bg-white shadow-lg rounded-lg p-5">
-                <h2 class="text-xl font-semibold mt-3">Smartphone</h2>
-                <p class="text-gray-600">Latest 5G smartphone with high-speed performance.</p>
-                <p class="text-blue-700 font-bold mt-2">$699.99</p>
-            </div>
-            <div class="bg-white shadow-lg rounded-lg p-5">
-                <h2 class="text-xl font-semibold mt-3">Laptop</h2>
-                <p class="text-gray-600">Powerful laptop for work and gaming.</p>
-                <p class="text-blue-700 font-bold mt-2">$1,299.99</p>
-            </div>
-            <div class="bg-white shadow-lg rounded-lg p-5">
-                <h2 class="text-xl font-semibold mt-3">Refrigerator</h2>
-                <p class="text-gray-600">Energy-efficient refrigerator</p>
-            </div>
-        </div>
-    </main>
-    <script type='text/javascript'>
-        function initEmbeddedMessaging() {
-            try {
-                embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
-
-                embeddedservice_bootstrap.init(
-                    '00DGB000003ZjEh',
-                    'NewEmbeddedServiceDeploymen',
-                    'https://orgfarm-2cf2549b16-dev-ed.develop.my.site.com/ESWNewEmbeddedServiceDepl1741011373357',
-                    {
-                        scrt2URL: 'https://orgfarm-2cf2549b16-dev-ed.develop.my.salesforce-scrt.com'
-                    }
-                );
-            } catch (err) {
-                console.error('Error loading Embedded Messaging: ', err);
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #2874f0;
+            color: white;
+            padding: 10px 0;
+        }
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .search-bar {
+            flex-grow: 1;
+            margin: 0 20px;
+            position: relative;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 4px;
+            border: none;
+            font-size: 14px;
+        }
+        
+        .search-bar button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background: #2874f0;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .user-actions a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        /* Navigation Bar */
+        nav {
+            background-color: #1a4b8e;
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 10px 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .nav-links li {
+            margin: 0 15px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            max-width: 1200px;
+            margin: 20px auto;
+            overflow: hidden;
+            border-radius: 8px;
+            position: relative;
+            background-color: #f0f0f0;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: linear-gradient(to right, #2874f0, #5e98f3);
+            color: white;
+            text-align: center;
+        }
+        
+        .hero-content {
+            padding: 20px;
+        }
+        
+        .hero h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .hero-button {
+            background: #ff6161;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Categories Section */
+        .categories {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .category-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background-color: #f5f7fa;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            color: #2874f0;
+        }
+        
+        .category-name {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        /* Products Section */
+        .products {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            padding: 15px;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 180px;
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            color: #2874f0;
+            font-size: 48px;
+        }
+        
+        .product-name {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .product-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+            height: 40px;
+            overflow: hidden;
+        }
+        
+        .product-price {
+            font-weight: bold;
+            color: #2874f0;
+            margin-bottom: 10px;
+        }
+        
+        .product-price strike {
+            color: #999;
+            font-weight: normal;
+            margin-left: 5px;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .stars {
+            color: #ffc107;
+            margin-right: 5px;
+        }
+        
+        .rating-count {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .add-to-cart {
+            background: #fb641b;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .add-to-cart:hover {
+            background: #e45718;
+        }
+        
+        /* Deals Section */
+        .deals {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .deal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .view-all {
+            color: #2874f0;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        /* Banner Section */
+        .banner {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .banner-content {
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .banner h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .banner p {
+            color: #666;
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .banner-button {
+            background: #2874f0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Footer */
+        footer {
+            background: #172337;
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #878787;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-column ul li a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            padding: 20px 20px 0;
+            border-top: 1px solid #454d5e;
+            text-align: center;
+            font-size: 14px;
+            color: #878787;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .search-bar {
+                width: 100%;
+                margin: 10px 0;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+            }
+            
+            .nav-links li {
+                margin: 5px 10px;
+            }
+            
+            .category-grid, .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .hero h1 {
+                font-size: 24px;
+            }
+            
+            .hero p {
+                font-size: 16px;
             }
         }
-    </script>
-    <script type='text/javascript' src='https://orgfarm-2cf2549b16-dev-ed.develop.my.site.com/ESWNewEmbeddedServiceDepl1741011373357/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
+        
+        /* Sale badge */
+        .sale-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff0000;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        /* Notification Counter */
+        .notification-counter {
+            background: #ff6161;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 5px;
+            position: relative;
+            top: -8px;
+        }
+    </style>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="top-bar">
+            <div class="logo">CubesDigital</div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search products, brands and more">
+                <button>Search</button>
+            </div>
+            <div class="user-actions">
+                <a href="#"><i class="fas fa-user"></i> Login</a>
+                <a href="#"><i class="fas fa-shopping-cart"></i> Cart <span class="notification-counter">3</span></a>
+                <a href="#"><i class="fas fa-user-circle"></i> Account</a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Navigation -->
+    <nav>
+        <ul class="nav-links">
+            <li><a href="#">Mobiles</a></li>
+            <li><a href="#">Televisions</a></li>
+            <li><a href="#">Audio</a></li>
+            <li><a href="#">Laptops</a></li>
+            <li><a href="#">Home Appliances</a></li>
+            <li><a href="#">Kitchen Appliances</a></li>
+            <li><a href="#">Personal Care</a></li>
+            <li><a href="#">Accessories</a></li>
+        </ul>
+    </nav>
+    
+    <!-- Hero Banner -->
+    <div class="hero">
+        <div class="sale-badge">MEGA SALE</div>
+        <div class="hero-content">
+            <h1>TECH MEGA SALE</h1>
+            <p>Up to 50% off on the latest electronics and gadgets</p>
+            <button class="hero-button">Shop Now</button>
+        </div>
+    </div>
+    
+    <!-- Categories Section -->
+    <section class="categories">
+        <h2 class="section-title">Shop by Category</h2>
+        <div class="category-grid">
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="category-name">Smartphones</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-laptop"></i>
+                </div>
+                <div class="category-name">Laptops</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-tv"></i>
+                </div>
+                <div class="category-name">Televisions</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-headphones"></i>
+                </div>
+                <div class="category-name">Audio</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <div class="category-name">Cameras</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="category-name">Appliances</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Deals of the Day -->
+    <section class="deals">
+        <div class="deal-header">
+            <h2 class="section-title">Deals of the Day</h2>
+            <a href="#" class="view-all">View All</a>
+        </div>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="product-name">SuperTech Pro 5G</div>
+                <div class="product-description">6.5" Display, 128GB Storage</div>
+                <div class="product-price">₹24,999 <strike>₹32,999</strike></div>
+                <div class="product-rating">
+                    <div class="stars">★★★★☆</div>
+                    <div class="rating-count">(2,563)</div>
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-laptop"></i>
+                </div>
+                <div class="product-name">UltraBook Pro</div>
+                <div class="product-description">i7, 16GB RAM, 512GB SSD</div>
+                <div class="product-price">₹74,999 <strike>₹89,999</strike></div>
+                <div class="product-rating">
+                    <div class="stars">★★★★★</div>
+                    <div class="rating-count">(1,847)</div>
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-tv"></i>
+                </div>
+                <div class="product-name">Crystal 4K Smart TV</div>
+                <div class="product-description">55" 4K Ultra HD Display</div>
+                <div class="product-price">₹45,999 <strike>₹59,999</strike></div>
+                <div class="product-rating">
+                    <div class="stars">★★★★☆</div>
+                    <div class="rating-count">(3,124)</div>
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-headphones"></i>
+                </div>
+                <div class="product-name">SoundMax Pro</div>
+                <div class="product-description">Noise Cancellation</div>
+                <div class="product-price">₹7,999 <strike>₹12,999</strike></div>
+                <div class="product-rating">
+                    <div class="stars">★★★★★</div>
+                    <div class="rating-count">(5,689)</div>
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-tablet-alt"></i>
+                </div>
+                <div class="product-name">SlimTab Ultra</div>
+                <div class="product-description">10.5" Retina Display</div>
+                <div class="product-price">₹32,999 <strike>₹39,999</strike></div>
+                           <div class="product-rating">
+                <div class="stars">★★★★☆</div>
+                <div class="rating-count">(1,342)</div>
+            </div>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+    </section>
+    
+    <!-- Mid Banner -->
+    <section class="banner">
+        <div class="banner-content">
+            <h2>Smart Home Revolution</h2>
+            <p>Transform your living space with cutting-edge smart home technology. Control everything from lighting to security with the touch of a button.</p>
+            <button class="banner-button">Explore Smart Home</button>
+        </div>
+    </section>
+    
+    <!-- Top Selling Products -->
+    <section class="products">
+        <h2 class="section-title">Top Selling Products</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <div class="product-name">GameX Pro 5</div>
+                <div class="product-description">Next-Gen Gaming Console</div>
+                <div class="product-price">₹49,999</div>
+                <div class="product-rating">
+                    <div class="stars">★★★★★</div>
+                    <div class="rating-count">(2,783)</div>
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-watch"></i>
+                </div>
+                <div class="product-name">LifeWatch Pro</div>
+                <div class="product-description">Health & Fitness Tracking</div>
+                <div class="product-price">₹14,999</div>
+                <div class="product-rating">
+                    <div class="stars">★★★★☆</div>
+                    <div class="rating-count">(4,521)</div>
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div class="product-name">Echo Home</div>
+                <div class="product-description">Smart Speaker with Assistant</div>
+                <div class="product-price">₹8,999</div>
+                <div class="product-rating">
+                    <div class="stars">★★★★☆</div>
+                    <div class="rating-count">(3,652)</div>
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-camera-retro"></i>
+                </div>
+                <div class="product-name">ProShot 750D</div>
+                <div class="product-description">24.1MP DSLR Camera</div>
+                <div class="product-price">₹54,999</div>
+                <div class="product-rating">
+                    <div class="stars">★★★★★</div>
+                    <div class="rating-count">(987)</div>
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-blender"></i>
+                </div>
+                <div class="product-name">QuickHeat 28L</div>
+                <div class="product-description">Convection Microwave Oven</div>
+                <div class="product-price">₹12,499</div>
+                <div class="product-rating">
+                    <div class="stars">★★★★☆</div>
+                    <div class="rating-count">(2,134)</div>
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>ABOUT</h3>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">CubesDigital Stories</a></li>
+                    <li><a href="#">Press</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>HELP</h3>
+                <ul>
+                    <li><a href="#">Payments</a></li>
+                    <li><a href="#">Shipping</a></li>
+                    <li><a href="#">Cancellation & Returns</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Report Issues</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>POLICY</h3>
+                <ul>
+                    <li><a href="#">Return Policy</a></li>
+                    <li><a href="#">Terms Of Use</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Sitemap</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>SOCIAL</h3>
+                <ul>
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2023 CubesDigital. All Rights Reserved.
+        </div>
+    </footer>
 </body>
 </html>
