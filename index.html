@@ -614,8 +614,8 @@
                 <div class="product-name">SlimTab Ultra</div>
                 <div class="product-description">10.5" Retina Display</div>
                 <div class="product-price">₹32,999 <strike>₹39,999</strike></div>
-                           <div class="product-rating">
-                <div class="stars">★★★★☆</div>
+                <div class="product-rating">
+                                    <div class="stars">★★★★☆</div>
                 <div class="rating-count">(1,342)</div>
             </div>
             <button class="add-to-cart">Add to Cart</button>
@@ -750,5 +750,24 @@
             &copy; 2023 CubesDigital. All Rights Reserved.
         </div>
     </footer>
+    <script type='text/javascript'>
+        function initEmbeddedMessaging() {
+            try {
+                embeddedservice_bootstrap.settings.language = 'en_US';
+
+                embeddedservice_bootstrap.init(
+                    '00DGB000003ZjEh',
+                    'GithubSiteEmbeddedServiceDeplyment',
+                    'https://orgfarm-2cf2549b16-dev-ed.develop.my.site.com/ESWGithubSiteEmbeddedServ1741055822380',
+                    {
+                        scrt2URL: 'https://orgfarm-2cf2549b16-dev-ed.develop.my.salesforce-scrt.com'
+                    }
+                );
+            } catch (err) {
+                console.error('Error loading Embedded Messaging: ', err);
+            }
+        }
+    </script>
+    <script type='text/javascript' src='https://orgfarm-2cf2549b16-dev-ed.develop.my.site.com/ESWGithubSiteEmbeddedServ1741055822380/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
 </body>
 </html>
