@@ -1,0 +1,182 @@
+// Apex Class: AccountSummaryPromptController.cls
+public with sharing class AccountSummaryPromptController {
+    @AuraEnabled(cacheable=true)
+    public static String fetchAccountSummary(String accountId) {
+        Account acc = [SELECT Account_Summary__c FROM Account WHERE Id = :accountId LIMIT 1];
+        return acc.Account_Summary__c;
+    }
+
+    @AuraEnabled
+    public static String generateAccountSummaryText(String accountId) {
+        Map<String, String> input = new Map<String, String>();
+        input.put('id', accountId);
+
+        ConnectApi.WrappedValue inputWrapper = new ConnectApi.WrappedValue();
+        inputWrapper.value = input;
+
+        Map<String, ConnectApi.WrappedValue> inputParams = new Map<String, ConnectApi.WrappedValue>();
+        inputParams.put('Input:Account', inputWrapper);
+
+        ConnectApi.EinsteinPromptTemplateGenerationsInput templateInput = new ConnectApi.EinsteinPromptTemplateGenerationsInput();
+        templateInput.additionalConfig = new ConnectApi.EinsteinLlmAdditionalConfigInput();
+        templateInput.additionalConfig.applicationName = 'PromptBuilderPreview';
+        templateInput.isPreview = false;
+        templateInput.inputParams = inputParams;
+
+        try {
+            ConnectApi.EinsteinPromptTemplateGenerationsRepresentation response =
+                ConnectApi.EinsteinLLM.generateMessagesForPromptTemplate('Account_Summary_Prompt_Template', templateInput);
+
+            return response.generations[0].text;
+        } catch (Exception e) {
+            System.debug('Error: ' + e.getMessage());
+            throw new AuraHandledException('Failed to generate summary.');
+        }
+    }
+
+    @AuraEnabled
+    public static void saveAccountSummary(String accountId, String summaryText) {
+        Account accToUpdate = new Account(Id = accountId, Account_Summary__c = summaryText);
+        update accToUpdate;
+    }
+}
+
+<!-- generateAccountSummary.html -->
+<template>
+    <lightning-card title="Account Summary" icon-name="standard:account">
+        <div class="slds-var-p-around_medium">
+            <template lwc:if={error}>
+                <div class="slds-text-color_error">{error}</div>
+            </template>
+
+            <template lwc:if={isLoading}>
+                <lightning-spinner size="medium"></lightning-spinner>
+            </template>
+
+            <template lwc:if={showChoice}>
+                <p>Summary found. What would you like to do?</p>
+                <lightning-button label="View Summary" onclick={handleShowExisting} class="slds-m-right_small"></lightning-button>
+                <lightning-button label="Generate New Summary" onclick={handleGenerate}></lightning-button>
+            </template>
+
+            <template lwc:if={showSummary}>
+                <lightning-formatted-rich-text value={summary}></lightning-formatted-rich-text>
+                <div class="slds-m-top_medium">
+                    <lightning-button label="Done" onclick={handleDone}></lightning-button>
+                </div>
+            </template>
+
+            <template lwc:if={showGeneratePrompt}>
+                <p>No summary found. Generate one?</p>
+                <lightning-button label="Generate Summary" onclick={handleGenerate}></lightning-button>
+            </template>
+        </div>
+    </lightning-card>
+</template>
+
+// generateAccountSummary.js
+import { LightningElement, api, track } from 'lwc';
+import fetchAccountSummary from '@salesforce/apex/AccountSummaryPromptController.fetchAccountSummary';
+import generateAccountSummaryText from '@salesforce/apex/AccountSummaryPromptController.generateAccountSummaryText';
+import saveAccountSummary from '@salesforce/apex/AccountSummaryPromptController.saveAccountSummary';
+
+export default class GenerateAccountSummary extends LightningElement {
+    @api recordId;
+    @track summary;
+    @track isLoading = false;
+    @track error;
+    @track showChoice = false;
+    @track showSummary = false;
+    @track showGeneratePrompt = false;
+    @track isNewGenerated = false;
+
+    connectedCallback() {
+        this.loadSummary();
+    }
+
+    loadSummary() {
+        this.isLoading = true;
+        this.showChoice = false;
+        this.showSummary = false;
+        this.showGeneratePrompt = false;
+
+        fetchAccountSummary({ accountId: this.recordId })
+            .then(result => {
+                if (result) {
+                    this.summary = result;
+                    this.showChoice = true;
+                } else {
+                    this.showGeneratePrompt = true;
+                }
+                this.error = undefined;
+            })
+            .catch(error => {
+                this.error = error.body?.message || error.message;
+            })
+            .finally(() => {
+                this.isLoading = false;
+            });
+    }
+
+    handleShowExisting() {
+        this.showChoice = false;
+        this.showSummary = true;
+        this.isNewGenerated = false;
+    }
+
+    handleGenerate() {
+        this.isLoading = true;
+        this.showChoice = false;
+        this.showGeneratePrompt = false;
+        this.showSummary = false;
+        this.isNewGenerated = true;
+
+        generateAccountSummaryText({ accountId: this.recordId })
+            .then(result => {
+                this.summary = result;
+                this.showSummary = true;
+                this.error = undefined;
+            })
+            .catch(error => {
+                this.error = error.body?.message || error.message;
+            })
+            .finally(() => {
+                this.isLoading = false;
+            });
+    }
+
+    handleDone() {
+        if (this.isNewGenerated && this.summary) {
+            this.isLoading = true;
+            saveAccountSummary({ accountId: this.recordId, summaryText: this.summary })
+                .then(() => {
+                    this.loadSummary();
+                })
+                .catch(error => {
+                    this.error = error.body?.message || error.message;
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
+        } else {
+            this.loadSummary();
+        }
+    }
+}
+
+<!-- generateAccountSummary.js-meta.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>Account</object>
+            </objects>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
