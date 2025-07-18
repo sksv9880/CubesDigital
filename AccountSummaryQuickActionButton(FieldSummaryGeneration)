@@ -1,0 +1,171 @@
+JS
+import { LightningElement, api, track } from 'lwc';
+import fetchAccountSummary from '@salesforce/apex/AccountSummaryPromptController.fetchAccountSummary';
+import generateAccountSummaryText from '@salesforce/apex/AccountSummaryPromptController.generateAccountSummaryText';
+import saveAccountSummary from '@salesforce/apex/AccountSummaryPromptController.saveAccountSummary';
+
+export default class GenerateAccountSummary extends LightningElement {
+    @api recordId;
+    @track summary;
+    @track isLoading = false;
+    @track error;
+
+    connectedCallback() {
+    console.log('Connected. Record ID:', this.recordId);
+
+    if (!this.recordId) {
+        // Retry loading after slight delay for quick actions
+        setTimeout(() => {
+            if (this.recordId) {
+                this.loadSummary();
+            } else {
+                this.error = 'Invalid Account ID.';
+            }
+        }, 200); // adjust if needed
+    } else {
+        this.loadSummary();
+    }
+}
+
+    loadSummary() {
+        this.isLoading = true;
+        this.summary = '';
+
+        fetchAccountSummary({ accountId: this.recordId })
+            .then(result => {
+                this.summary = result;
+                this.error = undefined;
+            })
+            .catch(error => {
+                this.error = error.body?.message || error.message;
+            })
+            .finally(() => {
+                this.isLoading = false;
+            });
+    }
+
+    handleGenerateClick() {
+        this.isLoading = true;
+        generateAccountSummaryText({ accountId: this.recordId })
+            .then(result => {
+                this.summary = result;
+                return saveAccountSummary({ accountId: this.recordId, summaryText: result });
+            })
+            .then(() => {
+                this.error = undefined;
+            })
+            .catch(error => {
+                this.error = error.body?.message || error.message;
+            })
+            .finally(() => {
+                this.isLoading = false;
+            });
+    }
+}
+HTML:
+
+<template>
+    <lightning-card title="Account Summary" icon-name="standard:account">
+        <div class="slds-p-around_medium" >
+            <template lwc:if={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </template>
+
+            <template lwc:if={error}>
+                <div class="slds-text-color_error">{error}</div>
+            </template>
+
+            <template lwc:if={summary}>
+                <div class="slds-box slds-theme_default slds-m-bottom_medium" style="max-height: 500px; overflow-y: auto;">
+                    <lightning-formatted-rich-text value={summary}></lightning-formatted-rich-text>
+                </div>
+            </template>
+
+            <lightning-button variant="brand" label="Generate Summary" onclick={handleGenerateClick}></lightning-button>
+        </div>
+    </lightning-card>
+</template>
+
+CSS:
+.container {
+    padding: 1rem;
+}
+
+.summary-text {
+    background-color: 
+#f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+================
+Meta:
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordAction</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordAction">
+            <objects>
+                <object>Account</object>
+            </objects>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
+============
+Apex:
+public with sharing class AccountSummaryPromptController {
+    @AuraEnabled
+    public static String fetchAccountSummary(String accountId) {
+        if (String.isBlank(accountId)) {
+            throw new AuraHandledException('Invalid Account ID.');
+        }
+
+        try {
+            Account acc = [SELECT Account_Summary__c FROM Account WHERE Id = :accountId LIMIT 1];
+            return String.isNotBlank(acc.Account_Summary__c) ? acc.Account_Summary__c : '';
+        } catch (Exception e) {
+            throw new AuraHandledException('Error retrieving Account Summary: ' + e.getMessage());
+        }
+    }
+@AuraEnabled
+public static String generateAccountSummaryText(String accountId) {
+    Map<String, String> input = new Map<String, String>();
+    input.put('id', accountId);
+
+    ConnectApi.WrappedValue inputWrapper = new ConnectApi.WrappedValue();
+    inputWrapper.value = input;
+
+    Map<String, ConnectApi.WrappedValue> inputParams = new Map<String, ConnectApi.WrappedValue>();
+    inputParams.put('Input:Account', inputWrapper);
+
+    ConnectApi.EinsteinPromptTemplateGenerationsInput templateInput = new ConnectApi.EinsteinPromptTemplateGenerationsInput();
+    templateInput.additionalConfig = new ConnectApi.EinsteinLlmAdditionalConfigInput();
+    templateInput.additionalConfig.applicationName = 'PromptBuilderPreview';
+    templateInput.isPreview = false;
+    templateInput.inputParams = inputParams;
+
+    try {
+        ConnectApi.EinsteinPromptTemplateGenerationsRepresentation response =
+            ConnectApi.EinsteinLLM.generateMessagesForPromptTemplate('Account_Field_Custom_Summary_Generation', templateInput);
+
+        // Convert line breaks to <br/> for display formatting
+        String rawText = response.generations[0].text;
+        String formattedText = rawText != null ? rawText.replaceAll('\n', '<br/>') : '';
+        return formattedText;
+
+    } catch (Exception e) {
+        throw new AuraHandledException('Failed to generate summary: ' + e.getMessage());
+    }
+}
+    @AuraEnabled
+public static void saveAccountSummary(Id accountId, String summaryText) {
+    Account acc = [SELECT Id, Account_Summary__c FROM Account WHERE Id = :accountId LIMIT 1];
+    acc.Account_Summary__c = summaryText;
+    update acc;
+}
+}
