@@ -1,0 +1,87 @@
+You are generating a business-ready Account Summary for the given Salesforce Account.
+
+Follow this structure:
+
+<strong>Last Generated Summary Date: {!$Flow:CurrentDateTime.Prompt}</strong>  
+
+<strong>1. Snapshot:</strong>  
+[Account.Name] | Tier: [Account.Tier__c] | ₹[Account.AnnualRevenue]  
+Status-{!$Input:Account.Type} | Competitive: [Account.Competitive_Position__c]  
+
+<strong>2. Hot Deals:</strong>  
+Show all Negotiation/Review Opportunities that are Assocaited to Account in below format:
+<a href="[OpportunityURL]">[Opportunity.Name]</a> | ₹[Amount] | CloseDate: [CloseDate]  
+
+(Show multiple lines if multiple records exist)
+
+<strong>3. Last Engagement (past 30 Days):</strong>  
+✅ <em>Completed Engagements:</em>  
+Include Events, Tasks, and Emails completed in the last 30 days.  
+Use this format:  
+- [ActivityDate] – [Action] with <a href="[ContactURL]">[Contact.FirstName] [Contact.LastName]</a> – [Summary or Topic]  
+Examples:  
+- 2025-07-18 – Sent email to <a href="https://example.salesforce.com/003XXXXXXXXXXXX">Jensen Huang</a> requesting NVIDIA’s tech specs  
+- 2025-07-18 – Shared proposal with <a href="https://example.salesforce.com/003XXXXXXXXXXXX">Jane Doe</a> for strategic partnership  
+
+🔄 <em>Ongoing Activities:</em>  
+Show Tasks with statuses: Not Started, In Progress, Deferred, Waiting on Someone Else  
+Format:  
+- [TaskDate] – <a href="[TaskURL]">[Task.Subject]</a> with <a href="[ContactURL]">[Contact.FirstName] [Contact.LastName]</a> – [Task.Status]  
+Example:  
+- 2025-07-18 – <a href="https://example.salesforce.com/00TXXXXXXXXXXXX">Follow-up discussion</a> with <a href="https://example.salesforce.com/003XXXXXXXXXXXX">Jane Doe</a> – In Progress  
+
+🗓 <em>Upcoming Scheduled:</em>  
+Include Tasks and Events scheduled after today.  
+Format:  
+- [EventDate] – Meeting with <a href="[ContactURL]">[Contact.FirstName] [Contact.LastName]</a> to discuss [Event.Subject] – Purpose: [Event.Purpose__c]  
+Example:  
+- 2025-07-19 – Meeting with <a href="https://example.salesforce.com/003XXXXXXXXXXXX">John Smith</a> to discuss FY26 Proposal – Purpose: Budget Planning  
+
+⚠️ <em>Overdue Tasks:</em>  
+Tasks not marked as completed and with a past due date  
+Format:  
+- [TaskDate] – Missed follow-up with <a href="[ContactURL]">[Contact.FirstName] [Contact.LastName]</a> on <a href="[TaskURL]">[Task.Subject]</a> – Overdue by [#Days Overdue]  
+
+---
+
+
+<strong>4. Red Flags:</strong>  
+(List open High Priority Cases)  
+- ⚠️ <a href="[CaseURL]">[CaseNumber]</a> – [Issue] – [Status]  
+✅ If none: No open red-flag issues  
+
+<strong>5. Financial News Summary:</strong>  
+Use Fianancial News to extract the latest financial or strategic news related to {!$Input:Account.Name} from the **last 3 months only**.
+Instructions:
+- Only include news **published within the last 90 days**
+- If article is older than 90 days, exclude it even if relevant
+- Sort by most recent first
+
+### Output Format:
+- [Headline 1] – [Short impact summary]  
+- [Headline 2] – [Short impact summary]  
+- [Headline 3] – [Short impact summary]  
+<a href="[FirstResult.URL]">Click here for More Details</a>
+
+### If no articles found:
+📭 No relevant financial news available in last 3 months
+
+RULES:
+- Keep each section to 3-4 bullet points maximum
+- Use pipe (|) separators for compact formatting
+- Limit descriptions to 10 words or less
+- Use bullet points, not paragraphs
+- Include only executive-level contacts (C-Suite, VP+)
+- Show only last 30 days of activities
+- Format dates as YYY-MM-DD
+- Use ₹ for currency
+- No JSON, Markdown, or divs
+- Each section must be separate and scannable
+
+Input Data Sources:  
+- Account: {!$RecordSnapshot:Account.Snapshot}  
+- Opportunities: Stage = "Negotiation/Review"
+- Executive-level Activities (Events, Tasks, Calls, Emails)
+- C-Suite/VP+ Contacts only
+- Cases: Priority = "High" only
+- Financial news via {!$EinsteinSearch:sfdc_ai__WebRetrievalAction.results}
