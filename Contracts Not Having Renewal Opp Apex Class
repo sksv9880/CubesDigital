@@ -1,0 +1,88 @@
+public class ContractErrorClass {
+
+    // Invocable Method — accepts a list of wrapper input requests, returns a list of response wrappers
+    @InvocableMethod(label='Contract With Errors' description='Contracts with errors are shown')
+    public static List<ContractErrorResponse> getContractsWithError(List<ContractErrorRequest> requests) {
+        List<ContractErrorResponse> responses = new List<ContractErrorResponse>();
+        
+         ContractErrorResponse response = new ContractErrorResponse();
+        response.contractErrors = new ContractErrors();
+        response.contractErrors.contractErrors = new List<ContractError>();
+
+        // Collect Account Ids from request wrappers
+        Set<Id> accountIds = new Set<Id>();
+        for (ContractErrorRequest req : requests) {
+            if (req.accountId != null) {
+                accountIds.add(req.accountId);
+            }
+        }
+
+        if (accountIds.isEmpty()) {
+            return responses; // no input provided
+        }
+
+        // Query contracts for the given Account Ids
+        List<Contract__c> contractList = [
+            SELECT Id, Name FROM Contract__c WHERE Account__c IN :accountIds
+        ];
+        System.debug('Contracts found: ' + contractList);
+
+        // Query Renewal Opportunities for those contracts
+        Map<Id, Renewal_Opportunity__c> renewalMap = new Map<Id, Renewal_Opportunity__c>();
+        
+        for (Renewal_Opportunity__c renewal : [
+            SELECT Id, Contracts_c__c FROM Renewal_Opportunity__c WHERE Contracts_c__c IN :contractList
+        ]) {
+            renewalMap.put(renewal.Contracts_c__c, renewal);
+        }
+        System.debug('Renewal Opps found: ' + renewalMap);
+
+        // Compare each contract against Renewal Opps
+        for (Contract__c contractRec : contractList) {
+            if (!renewalMap.containsKey(contractRec.Id)) {
+                ContractError res = new ContractError();
+                //res.contractName = contractRec.Name;
+                res.contractId   = contractRec.Id;
+               response.contractErrors.contractErrors.add(res);
+            }
+        }
+        responses.add(response);
+
+        return responses;
+    }
+
+    // Request Wrapper Class
+    public class ContractErrorRequest {
+        @InvocableVariable(label='Account Id' required=true)
+        public Id accountId;
+    }
+
+    // Response Wrapper Class
+    public class ContractErrorResponse {
+        
+        @InvocableVariable
+        public ContractErrors contractErrors;
+       
+    }
+    
+    
+    /**
+     * Wrapper class for the food options list
+     */
+    public class ContractErrors {
+        @InvocableVariable
+        public List<ContractError> contractErrors;
+    }
+    
+    /**
+     * Wrapper class for individual food option details
+     */
+    public class ContractError {
+ 
+       /* @InvocableVariable(label='Contract Name')
+        public String contractName;*/
+
+        @InvocableVariable(label='Contract Id')
+        public Id contractId;
+        
+}
