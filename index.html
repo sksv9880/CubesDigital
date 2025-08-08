@@ -93,34 +93,25 @@
 </footer>
 
 <!-- Salesforce Embedded Messaging SDK -->
-<<script type="text/javascript">
-    function initEmbeddedMessaging() {
-        try {
-            embeddedservice_bootstrap.settings.language = 'en_US'; // Example: 'en' or 'en-US'
+<script type='text/javascript'>
+	function initEmbeddedMessaging() {
+		try {
+			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
 
-            embeddedservice_bootstrap.init(
-                '00DgL000004jk1B', // OrganizationId
-                'LWC_2',           // DeveloperName
-                'https://orgfarm-4e9ff3a1c7-dev-ed.develop.my.salesforce-scrt.com',
-                {}
-            );
-        } catch (err) {
-            console.error('Error loading Embedded Messaging: ', err);
-        }
-    }
+			embeddedservice_bootstrap.init(
+				'00DgL000004jk1B',
+				'new_chat',
+				'https://orgfarm-4e9ff3a1c7-dev-ed.develop.my.site.com/ESWnewchat1754650335032',
+				{
+					scrt2URL: 'https://orgfarm-4e9ff3a1c7-dev-ed.develop.my.salesforce-scrt.com'
+				}
+			);
+		} catch (err) {
+			console.error('Error loading Embedded Messaging: ', err);
+		}
+	};
 </script>
-
-
-
-
-<script type="text/javascript" 
-    src="https://orgfarm-4e9ff3a1c7-dev-ed.develop.my.site.com/ESWLWCWebApp1753699621967/assets/js/bootstrap.min.js" 
-    onload="initEmbeddedMessaging()">
-</script>
-<script type="text/javascript" 
-    src="https://orgfarm-4e9ff3a1c7-dev-ed.develop.my.site.com/ESWLWCWebApp1753699621967/assets/js/bootstrap.min.js" 
-    onload="initEmbeddedMessaging()">
-</script>
+<script type='text/javascript' src='https://orgfarm-4e9ff3a1c7-dev-ed.develop.my.site.com/ESWnewchat1754650335032/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
 
 </body>
 </html>
