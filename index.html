@@ -9,6 +9,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
+    /* Your full CSS styles here — keeping your original CSS */
+    /* (Keeping it brief here since your CSS is already comprehensive and correct) */
+
     * {margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
     body {background-color:#f5f5f5;}
     header {background-color:#2874f0;color:white;padding:10px 0;}
@@ -89,25 +92,38 @@
   <div class="footer-bottom">&copy; 2025 CubesDigital. All Rights Reserved.</div>
 </footer>
 
-<!-- New Embedded Service Deployment Script -->
-<script type='text/javascript'>
-	function initEmbeddedMessaging() {
-		try {
-			embeddedservice_bootstrap.settings.language = 'en_US'; // Example: 'en' or 'en-US'
-			embeddedservice_bootstrap.init(
-				'00DHu000007vkX5',
-				'Agent_MIAW',
-				'https://customer-app-9637.my.site.com/ESWAgentMIAW1738937434706',
-				{
-					scrt2URL: 'https://customer-app-9637.my.salesforce-scrt.com'
-				}
-			);
-		} catch (err) {
-			console.error('Error loading Embedded Messaging: ', err);
-		}
-	};
+<!-- Salesforce Embedded Messaging SDK -->
+<script type="text/javascript" src="https://service.force.com/embeddedservice/5.0/esw.min.js"></script>
+
+<script type="text/javascript">
+  function initEmbeddedMessaging() {
+    try {
+      embeddedservice_bootstrap.settings.language = 'en_US';
+      embeddedservice_bootstrap.init(
+        '00DgL000004opcv',
+        'ESDN',
+        'https://orgfarm-505e8040be-dev-ed.develop.my.site.com/ESWESDN1750425565854',
+        {
+          scrt2URL: 'https://orgfarm-505e8040be-dev-ed.develop.my.salesforce-scrt.com'
+        }
+      );
+      console.log("Embedded Messaging initialized successfully.");
+    } catch (err) {
+      console.error("Error loading Embedded Messaging: ", err);
+    }
+  }
+
+  window.addEventListener("load", function() {
+    if (typeof embeddedservice_bootstrap !== "undefined") {
+      initEmbeddedMessaging();
+    } else {
+      console.error("Salesforce Embedded Service SDK not loaded.");
+    }
+  });
 </script>
-<script type='text/javascript' src='https://customer-app-9637.my.site.com/ESWAgentMIAW1738937434706/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
 
 </body>
 </html>
+
+
+
