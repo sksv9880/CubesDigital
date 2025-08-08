@@ -93,33 +93,30 @@
 </footer>
 
 <!-- Salesforce Embedded Messaging SDK -->
-<script type="text/javascript" src="https://service.force.com/embeddedservice/5.0/esw.min.js"></script>
-
 <script type="text/javascript">
-  function initEmbeddedMessaging() {
-    try {
-      embeddedservice_bootstrap.settings.language = 'en_US';
-      embeddedservice_bootstrap.init(
-        '00DgL000004opcv',
-        'ESDN',
-        'https://orgfarm-505e8040be-dev-ed.develop.my.site.com/ESWESDN1750425565854',
-        {
-          scrt2URL: 'https://orgfarm-505e8040be-dev-ed.develop.my.salesforce-scrt.com'
-        }
-      );
-      console.log("Embedded Messaging initialized successfully.");
-    } catch (err) {
-      console.error("Error loading Embedded Messaging: ", err);
-    }
-  }
+    function initEmbeddedMessaging() {
+        try {
+            embeddedservice_bootstrap.settings.language = 'en_US'; // Example: 'en' or 'en-US'
 
-  window.addEventListener("load", function() {
-    if (typeof embeddedservice_bootstrap !== "undefined") {
-      initEmbeddedMessaging();
-    } else {
-      console.error("Salesforce Embedded Service SDK not loaded.");
+            embeddedservice_bootstrap.init(
+                '00DgL000004jk1B', // Org ID
+                'LWC_Web_App',     // Deployment Name
+                'https://orgfarm-4e9ff3a1c7-dev-ed.develop.my.site.com/ESWLWCWebApp1753699621967',
+                {} // No scrt2URL here
+            );
+        } catch (err) {
+            console.error('Error loading Embedded Messaging: ', err);
+        }
     }
-  });
+</script>
+
+<script type="text/javascript" 
+    src="https://orgfarm-4e9ff3a1c7-dev-ed.develop.my.site.com/ESWLWCWebApp1753699621967/assets/js/bootstrap.min.js" 
+    onload="initEmbeddedMessaging()">
+</script>
+<script type="text/javascript" 
+    src="https://orgfarm-4e9ff3a1c7-dev-ed.develop.my.site.com/ESWLWCWebApp1753699621967/assets/js/bootstrap.min.js" 
+    onload="initEmbeddedMessaging()">
 </script>
 
 </body>
