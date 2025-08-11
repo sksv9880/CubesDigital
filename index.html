@@ -1,120 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CubesDigital - Electricals & Kitchen Appliances</title>
-
-  <!-- FontAwesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <style>
-    /* Your full CSS styles here — keeping your original CSS */
-    /* (Keeping it brief here since your CSS is already comprehensive and correct) */
-
-    * {margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
-    body {background-color:#f5f5f5;}
-    header {background-color:#2874f0;color:white;padding:10px 0;}
-    .top-bar {display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:0 auto;padding:0 20px;}
-    .logo {font-size:24px;font-weight:bold;}
-    .search-bar {flex-grow:1;margin:0 20px;position:relative;}
-    .search-bar input {width:100%;padding:10px 15px;border-radius:4px;border:none;font-size:14px;}
-    .search-bar button {position:absolute;right:5px;top:5px;background:#2874f0;color:white;border:none;padding:5px 10px;border-radius:2px;cursor:pointer;}
-    .user-actions {display:flex;gap:15px;}
-    .user-actions a {color:white;text-decoration:none;font-size:14px;}
-    nav {background-color:#1a4b8e;color:white;}
-    .nav-links {display:flex;justify-content:center;list-style:none;padding:10px 0;max-width:1200px;margin:0 auto;}
-    .nav-links li {margin:0 15px;}
-    .nav-links a {color:white;text-decoration:none;font-size:14px;}
-    .hero {background:linear-gradient(to right,#2874f0,#5e98f3);color:white;padding:50px 20px;text-align:center;}
-    .hero h1 {margin-bottom:10px;}
-    .hero p {margin-bottom:20px;}
-    .hero button {background:#ff6161;color:white;border:none;padding:10px 20px;font-weight:bold;border-radius:4px;}
-    footer {background:#172337;color:white;padding:30px 0 20px;margin-top:50px;}
-    .footer-content {max-width:1200px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;}
-    .footer-column h3 {font-size:16px;margin-bottom:15px;color:#878787;}
-    .footer-column ul {list-style:none;}
-    .footer-column ul li {margin-bottom:10px;}
-    .footer-column ul li a {color:white;text-decoration:none;font-size:14px;}
-    .footer-bottom {max-width:1200px;margin:20px auto 0;padding:20px 20px 0;border-top:1px solid #454d5e;text-align:center;font-size:14px;color:#878787;}
-  </style>
+<meta charset="UTF-8">
+<title>CustomTextMessageBubble Preview</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f9;
+        padding: 20px;
+    }
+    .chat-container {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    .embedded-messaging-message-content {
+        padding: 10px 14px;
+        margin: 8px 0;
+        border-radius: 12px;
+        display: inline-block;
+        max-width: 80%;
+        word-wrap: break-word;
+    }
+    .Agent {
+        background-color: #e0f2ff;
+        color: #004c99;
+        align-self: flex-start;
+    }
+    .EndUser {
+        background-color: #dcf8c6;
+        color: #1a1a1a;
+        align-self: flex-end;
+    }
+    .Chatbot {
+        background-color: #f0e6ff;
+        color: #4b0082;
+        align-self: flex-start;
+    }
+    a {
+        color: #0066cc;
+        text-decoration: underline;
+    }
+</style>
 </head>
-
 <body>
-
-<header>
-  <div class="top-bar">
-    <div class="logo">CubesDigital</div>
-    <div class="search-bar">
-      <input type="text" placeholder="Search products, brands and more">
-      <button>Search</button>
+<div class="chat-container">
+    <!-- EndUser message -->
+    <div class="embedded-messaging-message-content EndUser">
+        Hi! Can you send me the article?
     </div>
-    <div class="user-actions">
-      <a href="#"><i class="fas fa-user"></i> Login</a>
-      <a href="#"><i class="fas fa-shopping-cart"></i> Cart</a>
-      <a href="#"><i class="fas fa-user-circle"></i> Account</a>
+
+    <!-- Agent generic link -->
+    <div class="embedded-messaging-message-content Agent">
+        <a target="_blank" href="https://example.com/article">View Article</a>
     </div>
-  </div>
-</header>
 
-<nav>
-  <ul class="nav-links">
-    <li><a href="#">Mobiles</a></li>
-    <li><a href="#">Laptops</a></li>
-    <li><a href="#">Audio</a></li>
-    <li><a href="#">Appliances</a></li>
-  </ul>
-</nav>
+    <!-- Agent special link -->
+    <div class="embedded-messaging-message-content Agent">
+        <a target="_blank" href="https://www.test.com/specificLink">View Link</a>
+    </div>
 
-<div class="hero">
-  <h1>Welcome to CubesDigital</h1>
-  <p>Up to 50% off on electronics & appliances!</p>
-  <button>Shop Now</button>
+    <!-- Chatbot message -->
+    <div class="embedded-messaging-message-content Chatbot">
+        I can help you find that information!
+    </div>
 </div>
-
-<footer>
-  <div class="footer-content">
-    <div class="footer-column">
-      <h3>About</h3>
-      <ul>
-        <li><a href="#">Contact Us</a></li>
-        <li><a href="#">About Us</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <h3>Help</h3>
-      <ul>
-        <li><a href="#">Payments</a></li>
-        <li><a href="#">Shipping</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">&copy; 2025 CubesDigital. All Rights Reserved.</div>
-</footer>
-
-<!-- Salesforce Embedded Messaging SDK -->
-<script type='text/javascript'>
-	function initEmbeddedMessaging() {
-		try {
-			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
-
-			embeddedservice_bootstrap.init(
-				'00DgL000004jk1B',
-				'new_chat',
-				'https://orgfarm-4e9ff3a1c7-dev-ed.develop.my.site.com/ESWnewchat1754650335032',
-				{
-					scrt2URL: 'https://orgfarm-4e9ff3a1c7-dev-ed.develop.my.salesforce-scrt.com'
-				}
-			);
-		} catch (err) {
-			console.error('Error loading Embedded Messaging: ', err);
-		}
-	};
-</script>
-<script type='text/javascript' src='https://orgfarm-4e9ff3a1c7-dev-ed.develop.my.site.com/ESWnewchat1754650335032/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
-
 </body>
 </html>
-
-
-
