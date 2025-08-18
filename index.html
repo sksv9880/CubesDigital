@@ -62,41 +62,38 @@
 </head>
 <body>
 
-<!-- Embedded Service snippet from Salesforce -->
 <script type='text/javascript'>
-	function initEmbeddedMessaging() {
-		try {
-			embeddedservice_bootstrap.settings.language = 'en_US';
+function initEmbeddedMessaging() {
+    try {
+        embeddedservice_bootstrap.settings.language = 'en_US';
 
-			embeddedservice_bootstrap.init(
-				'00DWU00000TPmwp', // Org ID
-				'New',            // Deployment Name
-				'https://orgfarm-46a4b066a5-dev-ed.develop.my.site.com/ESWNew1755517685363',
-				{
-					scrt2URL: 'https://orgfarm-46a4b066a5-dev-ed.develop.my.salesforce-scrt.com'
-				}
-			);
-		} catch (err) {
-			console.error('Error loading Embedded Messaging: ', err);
-		}
-	};
+        embeddedservice_bootstrap.init(
+            '00DWU00000TPmwp',       // orgId
+            'New',                   // deploymentName
+            'https://orgfarm-46a4b066a5-dev-ed.develop.my.site.com/ESWNew1755517685363',
+            {
+                scrt2URL: 'https://orgfarm-46a4b066a5-dev-ed.develop.my.salesforce-scrt.com',
+                defaultMinimized: false,  // open by default
+                bottom: '3rem',           // lift from bottom
+                right: '1rem',            // distance from right
+                width: '350px',
+                height: '500px'
+            }
+        );
+    } catch (err) {
+        console.error('Error loading Embedded Messaging: ', err);
+    }
+}
 </script>
+
+<script type='text/javascript' src='https://orgfarm-46a4b066a5-dev-ed.develop.my.site.com/ESWNew1755517685363/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
 
 <!-- Load MIAW bootstrap -->
 <script type='text/javascript'
         src='https://orgfarm-46a4b066a5-dev-ed.develop.my.site.com/ESWNew1755517685363/assets/js/bootstrap.min.js'
         onload='initEmbeddedMessaging()'></script>
 
-	<style>
-  .embeddedServiceSidebar, 
-  #embeddedServiceLiveAgentSidebar, 
-  .embeddedServiceSidebarContainer {
-    position: fixed !important;
-    bottom: 40px !important;
-    right: 30px !important;
-    z-index: 9999 !important;
-  }
-</style>
+	
   
 <script type='text/javascript' src='https://.../bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
 
