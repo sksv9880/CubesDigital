@@ -2,68 +2,50 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CustomTextMessageBubble Preview</title>
+<title>Ask Agentforce - Custom Launcher</title>
 <style>
     body {
         font-family: Arial, sans-serif;
         background-color: #f4f6f9;
         padding: 20px;
     }
-    .chat-container {
-        max-width: 500px;
-        margin: 0 auto;
-    }
-    .embedded-messaging-message-content {
-        padding: 10px 14px;
-        margin: 8px 0;
-        border-radius: 12px;
-        display: inline-block;
-        max-width: 80%;
-        word-wrap: break-word;
-    }
-    .Agent {
-        background-color: #e0f2ff;
-        color: #004c99;
-        align-self: flex-start;
-    }
-    .EndUser {
-        background-color: #dcf8c6;
-        color: #1a1a1a;
-        align-self: flex-end;
-    }
-    .Chatbot {
-        background-color: #f0e6ff;
-        color: #4b0082;
-        align-self: flex-start;
-    }
-    a {
-        color: #0066cc;
-        text-decoration: underline;
-    }
 
-    /* === Custom Launcher === */
+    /* Custom Yellow Launcher */
     .custom-launcher {
         position: fixed;
         bottom: 20px;
         right: 20px;
-        cursor: pointer;
         background-color: #FFB81C; /* Cube84 Yellow */
-        color: #1A1A1A;            /* Dark text */
+        color: #1A1A1A;           /* Dark text */
         font-weight: bold;
-        border-radius: 25px;
-        padding: 10px 18px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+        font-size: 16px;
         border: none;
-        font-size: 14px;
+        border-radius: 30px;
+        padding: 12px 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     }
     .custom-launcher:hover {
-        background-color: #e6a700;
+        background-color: #e6a600; /* darker yellow on hover */
     }
 
-    /* === Override Chat Header === */
+    .custom-launcher img {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Hide Salesforce’s default launcher */
+    .embeddedservice-launcher {
+        display: none !important;
+    }
+
+    /* Chat header customization */
     .embeddedservice-chatHeader {
         background-color: #FFB81C !important; /* Cube84 Yellow */
-        color: #1A1A1A !important;
+        color: #1A1A1A !important;            /* Dark text */
         font-weight: bold;
         font-size: 16px;
     }
@@ -74,40 +56,22 @@
 </style>
 </head>
 <body>
-<div class="chat-container">
-    <!-- EndUser message -->
-    <div class="embedded-messaging-message-content EndUser">
-        Hi! Can you send me the article?
-    </div>
 
-    <!-- Agent generic link -->
-    <div class="embedded-messaging-message-content Agent">
-        <a target="_blank" href="https://example.com/article">View Article</a>
-    </div>
-
-    <!-- Agent special link -->
-    <div class="embedded-messaging-message-content Agent">
-        <a target="_blank" href="https://www.test.com/specificLink">View Link</a>
-    </div>
-
-    <!-- Chatbot message -->
-    <div class="embedded-messaging-message-content Chatbot">
-        I can help you find that information!
-    </div>
-</div>
-
-<!-- Custom launcher button -->
-<button class="custom-launcher" onclick="openChat()">🤖 Ask Agentforce</button>
+<!-- Custom Chat Button -->
+<button class="custom-launcher" onclick="openChat()">
+    <img src="https://img.icons8.com/ios-filled/50/000000/chatbot.png" alt="Agentforce Icon">
+    Ask Agentforce
+</button>
 
 <!-- Embedded Service snippet from Salesforce -->
 <script type='text/javascript'>
 	function initEmbeddedMessaging() {
 		try {
-			embeddedservice_bootstrap.settings.language = 'en_US'; // Language setting
+			embeddedservice_bootstrap.settings.language = 'en_US';
 
 			embeddedservice_bootstrap.init(
 				'00DWU00000TPmwp', // Org ID
-				'New',             // Deployment Name
+				'New',            // Deployment Name
 				'https://orgfarm-46a4b066a5-dev-ed.develop.my.site.com/ESWNew1755517685363',
 				{
 					scrt2URL: 'https://orgfarm-46a4b066a5-dev-ed.develop.my.salesforce-scrt.com'
@@ -118,6 +82,7 @@
 		}
 	};
 
+    /* Open Chat manually when clicking custom button */
     function openChat() {
         if (window.embeddedservice_bootstrap &&
             window.embeddedservice_bootstrap.utilAPI) {
@@ -128,10 +93,10 @@
     }
 </script>
 
+<!-- Load MIAW bootstrap -->
 <script type='text/javascript'
-	src='https://orgfarm-46a4b066a5-dev-ed.develop.my.site.com/ESWNew1755517685363/assets/js/bootstrap.min.js'
-	onload='initEmbeddedMessaging()'>
-</script>
+        src='https://orgfarm-46a4b066a5-dev-ed.develop.my.site.com/ESWNew1755517685363/assets/js/bootstrap.min.js'
+        onload='initEmbeddedMessaging()'></script>
 
 </body>
 </html>
