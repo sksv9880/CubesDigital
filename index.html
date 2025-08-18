@@ -40,6 +40,37 @@
         color: #0066cc;
         text-decoration: underline;
     }
+
+    /* === Custom Launcher === */
+    .custom-launcher {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        cursor: pointer;
+        background-color: #FFB81C; /* Cube84 Yellow */
+        color: #1A1A1A;            /* Dark text */
+        font-weight: bold;
+        border-radius: 25px;
+        padding: 10px 18px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+        border: none;
+        font-size: 14px;
+    }
+    .custom-launcher:hover {
+        background-color: #e6a700;
+    }
+
+    /* === Override Chat Header === */
+    .embeddedservice-chatHeader {
+        background-color: #FFB81C !important; /* Cube84 Yellow */
+        color: #1A1A1A !important;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    .embeddedservice-chatHeader .headerText,
+    .embeddedservice-chatHeader .embeddedserviceIcon {
+        color: #1A1A1A !important;
+    }
 </style>
 </head>
 <body>
@@ -65,15 +96,18 @@
     </div>
 </div>
 
+<!-- Custom launcher button -->
+<button class="custom-launcher" onclick="openChat()">🤖 Ask Agentforce</button>
+
 <!-- Embedded Service snippet from Salesforce -->
 <script type='text/javascript'>
 	function initEmbeddedMessaging() {
 		try {
-			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+			embeddedservice_bootstrap.settings.language = 'en_US'; // Language setting
 
 			embeddedservice_bootstrap.init(
-				'00DWU00000TPmwp',
-				'New',
+				'00DWU00000TPmwp', // Org ID
+				'New',             // Deployment Name
 				'https://orgfarm-46a4b066a5-dev-ed.develop.my.site.com/ESWNew1755517685363',
 				{
 					scrt2URL: 'https://orgfarm-46a4b066a5-dev-ed.develop.my.salesforce-scrt.com'
@@ -83,9 +117,21 @@
 			console.error('Error loading Embedded Messaging: ', err);
 		}
 	};
-</script>
-<script type='text/javascript' src='https://orgfarm-46a4b066a5-dev-ed.develop.my.site.com/ESWNew1755517685363/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
 
+    function openChat() {
+        if (window.embeddedservice_bootstrap &&
+            window.embeddedservice_bootstrap.utilAPI) {
+            window.embeddedservice_bootstrap.utilAPI.launchChat();
+        } else {
+            console.error("MIAW bootstrap not ready yet");
+        }
+    }
+</script>
+
+<script type='text/javascript'
+	src='https://orgfarm-46a4b066a5-dev-ed.develop.my.site.com/ESWNew1755517685363/assets/js/bootstrap.min.js'
+	onload='initEmbeddedMessaging()'>
+</script>
 
 </body>
 </html>
